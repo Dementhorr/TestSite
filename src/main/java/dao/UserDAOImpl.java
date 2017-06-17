@@ -9,33 +9,31 @@ import java.sql.Statement;
 import databese.DBConnection;
 import entity.User;
 
-public enum UserDAOImpl implements UserDAO {
+public enum UserDAOImpl {
 
 	INSTANCE;
-
-	
 
 	public User getU(int id) {
 		User user = null;
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		PreparedStatement preparedstatement = null;
+		ResultSet resultset = null;
 		Connection connection = DBConnection.getInstance().getConnection();
 		String sql = "Select * from users WHERE id = ?";
 
 		try {
 
-			ps = connection.prepareStatement(sql);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			while (rs.next()) {
+			preparedstatement = connection.prepareStatement(sql);
+			preparedstatement.setInt(1, id);
+			resultset = preparedstatement.executeQuery();
+			while (resultset.next()) {
 				user = new User();
-				user.setId(rs.getInt("id"));
-				user.setAge(rs.getInt("age"));
-				user.setName(rs.getString("name"));
-				user.setLogin(rs.getString("login"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
+				user.setId(resultset.getInt("id"));
+				user.setAge(resultset.getInt("age"));
+				user.setName(resultset.getString("name"));
+				user.setLogin(resultset.getString("login"));
+				user.setEmail(resultset.getString("email"));
+				user.setPassword(resultset.getString("password"));
 				return user;
 			}
 
@@ -49,84 +47,59 @@ public enum UserDAOImpl implements UserDAO {
 
 	}
 
-	public static User loginToSite(String login, String password)  {
+	public static User findUserbyLoginPassword(String login, String password) {
 		Connection connection = DBConnection.getInstance().getConnection();
-		ResultSet rs = null;
-		PreparedStatement ps = null;
+		ResultSet resultset = null;
+		PreparedStatement preparedstatement = null;
 		String SQLquery = "SELECT * FROM users WHERE login=? and password=?";
 
 		try {
-			ps = connection.prepareStatement(SQLquery);
-			ps.setString(1, login);
-			ps.setString(2, password);
-			rs = ps.executeQuery();
+			preparedstatement = connection.prepareStatement(SQLquery);
+			preparedstatement.setString(1, login);
+			preparedstatement.setString(2, password);
+			
+			resultset = preparedstatement.executeQuery();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		User user = null;
 		try {
-			while (rs.next()) {
+			while (resultset.next()) {
 				user = new User();
-				user.setId(rs.getInt("id"));
-				user.setAge(rs.getInt("age"));
-				user.setName(rs.getString("name"));
-				user.setLogin(rs.getString("login"));
-				user.setEmail(rs.getString("email"));
-				user.setPassword(rs.getString("password"));
+				user.setId(resultset.getInt("id"));
+				user.setAge(resultset.getInt("age"));
+				user.setName(resultset.getString("name"));
+				user.setLogin(resultset.getString("login"));
+				user.setEmail(resultset.getString("email"));
+				user.setPassword(resultset.getString("password"));
 			}
-		} catch (SQLException e) {		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public static void IsertUser(User user) {
+		Connection connection = DBConnection.getInstance().getConnection();
+		PreparedStatement prepatedstatement = null;
+		
+		try {
+			prepatedstatement = connection.prepareStatement("insert into users(email, login, password,name,age) " + "values (?,?,?,?,?)");
+		
+			prepatedstatement.setString(1, user.getEmail());
+			prepatedstatement.setString(2, user.getLogin());
+			prepatedstatement.setString(3, user.getPassword());
+			prepatedstatement.setString(4, user.getName());
+			prepatedstatement.setInt(5, user.getAge());
+
+			prepatedstatement.executeUpdate();
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return user;
-
-	}
-public static void IsertUser(User user){
-	Connection connection = DBConnection.getInstance().getConnection();
-	PreparedStatement ps = null;
-	try {
-        ps = connection.prepareStatement("insert into users(email, login, password,name,age) " +
-                "values (?,?,?,?,?)");
-      
-        ps.setString(1,user.getEmail());
-        ps.setString(2,user.getLogin());
-        ps.setString(3,user.getPassword());
-        ps.setString(4,user.getName());
-        ps.setInt(5,user.getAge());
-     
-        ps.executeUpdate();
-        
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-
-}
-	
-	
-	@Override
-	public void addUser(User theUser) {
-
 	}
 
-	@Override
-	public void deleteUser(int id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateUser(User theUser) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public User getUser(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
 }

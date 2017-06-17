@@ -21,7 +21,8 @@ public class DoRegistration extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        User user; 
+        User user;
+       
         String errorMsg = null;
         String name = request.getParameter("fname");
         String email = request.getParameter("email");
@@ -30,7 +31,7 @@ public class DoRegistration extends HttpServlet {
         int age = Integer.parseInt(request.getParameter("age"));
         boolean error = false;
         
-        if(name==null || login==null || email==null || password==null || age<=99){
+        if(name==null || login==null || email==null || password==null || age<=5 && age>=100){
         	errorMsg="Incorrect dates";
         	error=true;
         }else{
@@ -43,7 +44,12 @@ public class DoRegistration extends HttpServlet {
         	RequestDispatcher dispatcher = request.getRequestDispatcher("/SeccesLog.jsp");
     		dispatcher.forward(request, response);
         }
-
+        
+        
+        
+		
 	}
+
+
 
 }
