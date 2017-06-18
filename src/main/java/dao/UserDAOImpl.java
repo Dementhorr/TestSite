@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import databese.DBConnection;
+import entity.Course;
 import entity.User;
 
 public enum UserDAOImpl {
@@ -80,21 +81,64 @@ public enum UserDAOImpl {
 		}
 		return user;
 	}
-
-	public static void IsertUser(User user) {
+	public static User findUserbyLogin(String login) {
 		Connection connection = DBConnection.getInstance().getConnection();
-		PreparedStatement prepatedstatement = null;
+		ResultSet resultset = null;
+		PreparedStatement preparedstatement = null;
+		String SQLquery = "SELECT login FROM users WHERE login=?";
+
+		try {
+			preparedstatement = connection.prepareStatement(SQLquery);
+			preparedstatement.setString(1, login);
+			
+			resultset = preparedstatement.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		User user = null;
+		try {
+			while (resultset.next()) {
+				user = new User();
+				user.setLogin(resultset.getString("login"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public static void UpdateUserForegnKey(User user,String courseId){
+		Connection connection = DBConnection.getInstance().getConnection();
+		PreparedStatement preparedstatement = null;
+		int id;
+		try {
+			preparedstatement = connection.prepareStatement("update users set courseId=? where id=?;");
+			id=Integer.parseInt(courseId);
+			
+			preparedstatement.setInt(1,id );
+			preparedstatement.setInt(2, user.getId());
+		
+			preparedstatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public static void InsertUser(User user) {
+		Connection connection = DBConnection.getInstance().getConnection();
+		PreparedStatement preparedstatement = null;
 		
 		try {
-			prepatedstatement = connection.prepareStatement("insert into users(email, login, password,name,age) " + "values (?,?,?,?,?)");
+			preparedstatement = connection.prepareStatement("insert into users(email, login, password,name,age) " + "values (?,?,?,?,?)");
 		
-			prepatedstatement.setString(1, user.getEmail());
-			prepatedstatement.setString(2, user.getLogin());
-			prepatedstatement.setString(3, user.getPassword());
-			prepatedstatement.setString(4, user.getName());
-			prepatedstatement.setInt(5, user.getAge());
+			preparedstatement.setString(1, user.getEmail());
+			preparedstatement.setString(2, user.getLogin());
+			preparedstatement.setString(3, user.getPassword());
+			preparedstatement.setString(4, user.getName());
+			preparedstatement.setInt(5, user.getAge());
 
-			prepatedstatement.executeUpdate();
+			preparedstatement.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();

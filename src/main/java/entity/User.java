@@ -8,9 +8,7 @@ public class User {
 	private String password;
 	private int age;
 	private String name;
-	
-	
-	
+	private int courseId;
 	
 	public User( String login, String email, String password, int age, String name) {
 		this.login = login;
@@ -19,6 +17,7 @@ public class User {
 		this.age = age;
 		this.name = name;
 	}
+	
 	public User() {
 	}
 	public int getId() {
@@ -56,6 +55,12 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
 	}
 	@Override
 	public String toString() {

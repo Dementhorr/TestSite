@@ -9,14 +9,18 @@
 <body>
 
 	<form action="DoRegistration">
-		<label>name<input type="text" name="fname" /><br />
-		<br /></label> <label>age<input type="number" min="10" max="99" name="age" /><br />
-		<br /></label> <label>email<input type="text" name="email" /><br />
+		<label>name<input type="text" name="fname" value="${name}" /><br />
+		<br /></label> <label>age<input type="number" min="5" max="99" name="age" value="${age}"/><br />
+		<br /></label> <label>email<input type="text" name="email" value="${email}" /><br />
 		<br /></label> <label>login<input type="text" name="log" /><br />
 		<br /></label> <label>password<input type="password" name="pwd" /><br />
-		<br /></label> <br />
+		<br /></label> 
+			<p>${errorString} </p>
 		<br /> <input type="submit" value="submit" />
 	</form>
+
+	
+	
 
 </body>
 </html>

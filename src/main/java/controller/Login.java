@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.UserDAOImpl;
 import entity.User;
@@ -30,7 +30,7 @@ public class Login extends HttpServlet {
 
 		if (login == null || password == null || login.length() == 0 || password.length() == 0) {
 			error = true;
-			errorMsg = "No dates input";
+			errorMsg = "No all dates are inputed";
 		} 
 		else {
 			user = UserDAOImpl.findUserbyLoginPassword(login, password);
@@ -44,8 +44,6 @@ public class Login extends HttpServlet {
 			user = new User();
 
 			user.setLogin(login);
-			user.setPassword(password);
-			
 			request.setAttribute("errorString", errorMsg);
 			request.setAttribute("user", user.getLogin());
 			
@@ -54,8 +52,11 @@ public class Login extends HttpServlet {
 
 		}
 		if (!error) {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/SuccesLoged.jsp");
+			HttpSession session = request.getSession();
+			LoginedUser.setLoginedUser(session, user);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/UserHome.jsp");
 			dispatcher.forward(request, response);
+			
 		}
 	}
 
