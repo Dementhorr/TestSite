@@ -40,7 +40,7 @@ public class DoRegistration extends HttpServlet {
 		boolean error = false;
 
 		if (name == null || login == null || email == null || password == null || (age <= 5 && age >= 100) 
-				|| name.length()==0 || login.length()==0 || email.length()==0 || password.length()==0  ) {
+				|| name.length()==0 || login.length()<4 || email.length()==0 || password.length()<5  ) {
 			errorMsg = "Incorrect dates";
 			error = true;
 		} else {
