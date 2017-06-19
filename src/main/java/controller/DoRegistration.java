@@ -8,8 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import dao.CourseDAOImpl;
 import dao.UserDAOImpl;
+import entity.Course;
 import entity.User;
 
 /**
@@ -61,8 +64,10 @@ public class DoRegistration extends HttpServlet {
 		}
 		if (!error) {
 			user = new User(login, email, password, age, name);
+			HttpSession session = request.getSession();
+			LoginedUser.setLoginedUser(session, user);
 			UserDAOImpl.InsertUser(user);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/UserHome.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Login");
 			dispatcher.forward(request, response);
 		}
 

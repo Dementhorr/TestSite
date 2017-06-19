@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.CourseDAOImpl;
 import dao.UserDAOImpl;
+import entity.Course;
 import entity.User;
 
 /**
@@ -52,9 +54,12 @@ public class Login extends HttpServlet {
 
 		}
 		if (!error) {
+			//Course course=null;
+			//course = CourseDAOImpl.ShowCheckedCourse(user);
 			HttpSession session = request.getSession();
 			LoginedUser.setLoginedUser(session, user);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/UserHome.jsp");
+			//session.setAttribute("course", course);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/HomeService");
 			dispatcher.forward(request, response);
 			
 		}

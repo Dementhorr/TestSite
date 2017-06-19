@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.CourseDAOImpl;
 import dao.UserDAOImpl;
 import entity.Course;
 import entity.User;
@@ -24,11 +25,19 @@ public class HomeService extends HttpServlet {
 	
 		HttpSession session = request.getSession();
 	User loginedUser = LoginedUser.getLoginedUser(session);
+	Course course=null;
 	request.setAttribute("loginedUser",loginedUser);
 	String courseId = request.getParameter("course");
 	if(courseId != null){
 		UserDAOImpl.UpdateUserForegnKey(loginedUser, courseId);
+	
 	}
+	
+	//User user=(User) session.getAttribute("user");
+	//course = CourseDAOImpl.ShowCheckedCourse(user);
+	course = CourseDAOImpl.ShowCheckedCourse(loginedUser);
+	//course = (Course) session.getAttribute("course");
+	request.setAttribute("UserCourse",course);
 	RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/UserHome.jsp");
 	dispatcher.forward(request, response);
 	

@@ -55,5 +55,10 @@ public class Course {
 	public void setNumOfRegistred(int numOfRegistred) {
 		NumOfRegistred = numOfRegistred;
 	}
+	@Override
+	public String toString() {
+		return "You are registered on " + CourseName + " course ,address is" + Address + " company is " + Company + ". Teacher of a course "
+				+ Teacher + "";
+	}
 	
 }
